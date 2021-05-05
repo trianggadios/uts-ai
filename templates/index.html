@@ -69,10 +69,11 @@
             }).then(function (response) {
               return response.text();
             }).then(function (response_text) {
-              try:
+              try {
                 var json_object = JSON.parse(response_text);
-              catch:
+              } catch(err) {
                 document.getElementById("setup_text").innerHTML = "Please Refresh Webpage...";
+              }
               if (json_object.status == 200) {
                 document.getElementById("setup_text").innerHTML = "Download Complete...";
                 document.getElementById("loader").style.display = "none";

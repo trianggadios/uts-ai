@@ -24,14 +24,6 @@ auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
 
-class ModelData():
-    d2v_model = None
-    clfrf_model = None
-
-
-model_data = ModelData()
-
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -41,8 +33,10 @@ def index():
 def model_doc2vec_download():
     try:
         model_config.download_all_model()
-        model_data.d2v_model = Doc2Vec.load('model/model.d2v')
-        model_data.clfrf_model = pickle.load(open('model/model_final.sav', 'rb'))
+        global doc2vec_model
+        doc2vec_model = Doc2Vec.load('model/model.d2v')
+        global clf_randomforest_model
+        clf_randomforest_model = pickle.load(open('model/model_final.sav', 'rb'))
         return jsonify(
             {
                 'status': 200,
@@ -53,7 +47,7 @@ def model_doc2vec_download():
         return jsonify(
             {
                 'status': 500,
-                'message': f'{e}. Please refresh webpage...'
+                'message': f'{e}. Please refresh webpage'
             }
         )
 
@@ -79,8 +73,8 @@ def analisis_data():
 
     for messages in tweets:
         normalize_messages = gensim.utils.simple_preprocess(messages)
-        vector_messages = model_data.d2v_model.infer_vector(normalize_messages)
-        result = model_data.clfrf_model.predict([vector_messages])[0]
+        vector_messages = doc2vec_model.infer_vector(normalize_messages)
+        result = clf_randomforest_model.predict([vector_messages])[0]
         if result == 1:
             positif.append(messages)
         else:

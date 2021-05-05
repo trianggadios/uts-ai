@@ -33,10 +33,6 @@ def index():
 def model_doc2vec_download():
     try:
         model_config.download_all_model()
-        global doc2vec_model
-        doc2vec_model = Doc2Vec.load('model/model.d2v')
-        global clf_randomforest_model
-        clf_randomforest_model = pickle.load(open('model/model_final.sav', 'rb'))
         return jsonify(
             {
                 'status': 200,
@@ -67,6 +63,9 @@ def analisis_data():
     for tweet in tmpTweets:
         if tweet.created_at < endDate and tweet.created_at > startDate:
             tweets.append(tweet.text)
+
+    doc2vec_model = Doc2Vec.load('model/model.d2v')
+    clf_randomforest_model = pickle.load(open('model/model_final.sav', 'rb'))
 
     positif = []
     negatif = []

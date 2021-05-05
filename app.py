@@ -81,6 +81,3 @@ def analisis_data():
             negatif.append(messages)
 
     return f"dari {len(tweets)} tweets terdapat {len(positif)} tweets positif, dan {len(negatif)} tweets negatif"
-
-
-app.run()

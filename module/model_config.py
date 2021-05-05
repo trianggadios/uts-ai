@@ -12,7 +12,7 @@ def download_all_model():
     GoogleDriveDownloader.download_file_from_google_drive(
         file_id='1_CT6eSu63pfFdq4dXeFlV6OYjUBKfHAn',
         dest_path='model/model.d2v',
-        showsize=True,
+        showsize=True
 
     )
 

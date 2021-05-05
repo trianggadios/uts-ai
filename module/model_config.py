@@ -9,10 +9,10 @@ def download_all_model():
     except:
         pass
 
-    model_1 = '1_CT6eSu63pfFdq4dXeFlV6OYjUBKfHAn'
+    model_1 = '1Z_Ov1nrMua43lv6vxGsIdRYvHH5nefAU'
     model_1_des = 'model/model.d2v'
 
-    model_2 = '1-0pByu6ljf1JwrGiQSvXnMBOBrnxh-VU'
+    model_2 = '1-F1m_XPpSCitr_cuh1gB_4not15jDLKo'
     model_2_des = 'model/model_final.sav'
 
     GoogleDriveDownloader.download_file_from_google_drive(

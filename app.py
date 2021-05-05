@@ -2,6 +2,7 @@ from flask import Flask
 from flask import jsonify
 from flask import render_template
 from flask import request
+from flask import session
 
 from module import model_config
 
@@ -23,10 +24,6 @@ auth = tweepy.OAuthHandler(api_key, api_secret_key)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
 
-model_config.download_all_model()
-
-doc2vec_model = Doc2Vec.load('model/model.d2v')
-clf_randomforest_model = pickle.load(open('model/model_final.sav', 'rb'))
 
 @app.route('/')
 def index():
@@ -37,6 +34,10 @@ def index():
 def model_doc2vec_download():
     try:
         model_config.download_all_model()
+        global doc2vec_model
+        global clf_randomforest_model
+        doc2vec_model = Doc2Vec.load('model/model.d2v')
+        clf_randomforest_model = pickle.load(open('model/model_final.sav', 'rb'))
         return jsonify(
             {
                 'status': 200,

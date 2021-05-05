@@ -70,6 +70,7 @@
             }).then(function (response) {
               return response.text();
             }).then(function (response_text) {
+              console.log(response_text);
               try {
                 var json_object = JSON.parse(response_text);
               } catch(err) {

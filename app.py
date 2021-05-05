@@ -47,7 +47,7 @@ def model_doc2vec_download():
         return jsonify(
             {
                 'status': 500,
-                'message': f'{e}'
+                'message': f'{e}. Please refresh webpage...'
             }
         )
 

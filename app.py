@@ -15,6 +15,8 @@ import datetime
 
 app = Flask(__name__)
 
+app.secret_key = 'dljsaklqk24e21cjn!Ew@@dsa5'
+
 api_key = "lrRxfrV5n4AudieQDnl7BsX50"
 api_secret_key = "dPF86YYwFFTunkWL8TrQu3rRo3p13eRIevX3RKkOHkw2XCafCZ"
 access_token = "1389444564054810632-PXJiEIbHJv6eHK22LdL4zHd2A9TtO5"

@@ -2,7 +2,6 @@ from flask import Flask
 from flask import jsonify
 from flask import render_template
 from flask import request
-from flask import session
 
 from module import model_config
 
@@ -15,8 +14,6 @@ import datetime
 
 app = Flask(__name__)
 
-app.secret_key = 'dljsaklqk24e21cjn!Ew@@dsa5'
-
 api_key = "lrRxfrV5n4AudieQDnl7BsX50"
 api_secret_key = "dPF86YYwFFTunkWL8TrQu3rRo3p13eRIevX3RKkOHkw2XCafCZ"
 access_token = "1389444564054810632-PXJiEIbHJv6eHK22LdL4zHd2A9TtO5"
@@ -25,6 +22,14 @@ access_token_secret = "SGHgDBKQxQv0fxe80RE4GfMb6IrrcW22FeFoBY4NCNCAl"
 auth = tweepy.OAuthHandler(api_key, api_secret_key)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
+
+
+class ModelData():
+    d2v_model = None
+    clfrf_model = None
+
+
+model_data = ModelData()
 
 
 @app.route('/')
@@ -36,8 +41,8 @@ def index():
 def model_doc2vec_download():
     try:
         model_config.download_all_model()
-        session['doc2vec'] = Doc2Vec.load('model/model.d2v')
-        session['clfrf'] = pickle.load(open('model/model_final.sav', 'rb'))
+        model_data.d2v_model = Doc2Vec.load('model/model.d2v')
+        model_data.clfrf_model = pickle.load(open('model/model_final.sav', 'rb'))
         return jsonify(
             {
                 'status': 200,
@@ -69,16 +74,13 @@ def analisis_data():
         if tweet.created_at < endDate and tweet.created_at > startDate:
             tweets.append(tweet.text)
 
-    doc2vec_model = session['doc2vec']
-    clf_randomforest_model = session['clfrf']
-
     positif = []
     negatif = []
 
     for messages in tweets:
         normalize_messages = gensim.utils.simple_preprocess(messages)
-        vector_messages = doc2vec_model.infer_vector(normalize_messages)
-        result = clf_randomforest_model.predict([vector_messages])[0]
+        vector_messages = model_data.d2v_model.infer_vector(normalize_messages)
+        result = model_data.clfrf_model.predict([vector_messages])[0]
         if result == 1:
             positif.append(messages)
         else:

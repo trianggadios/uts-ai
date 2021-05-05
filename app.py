@@ -2,6 +2,7 @@ from flask import Flask
 from flask import jsonify
 from flask import render_template
 from flask import request
+from flask import session
 
 from module import model_config
 
@@ -33,6 +34,8 @@ def index():
 def model_doc2vec_download():
     try:
         model_config.download_all_model()
+        session['doc2vec'] = Doc2Vec.load('model/model.d2v')
+        session['clfrf'] = pickle.load(open('model/model_final.sav', 'rb'))
         return jsonify(
             {
                 'status': 200,
@@ -64,8 +67,8 @@ def analisis_data():
         if tweet.created_at < endDate and tweet.created_at > startDate:
             tweets.append(tweet.text)
 
-    doc2vec_model = Doc2Vec.load('model/model.d2v')
-    clf_randomforest_model = pickle.load(open('model/model_final.sav', 'rb'))
+    doc2vec_model = session['doc2vec']
+    clf_randomforest_model = session['clfrf']
 
     positif = []
     negatif = []
